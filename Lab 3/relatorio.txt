@@ -1,0 +1,14 @@
+xTaskCreate(	vTask1,		/* Pointer to the function that implements the task. */
+					"Task 1",	/* Text name for the task.  This is to facilitate debugging only. */
+					1000,		/* Stack depth - most small microcontrollers will use much less stack than this. */
+					NULL,		/* We are not using the task parameter. */
+					1,			/* This task will run at priority 1. */
+					NULL );		/* We are not using the task handle. */
+
+Dentro do metodo de criação de task.
+	A alteração do parametro do numero de prioridade, da para o metodo uma priridade maior de ser executada. Isso significa que os recursos estiverem todos usados e o metodo for executado ele vai dar prioridade para o de maior relevancia, causando o problema de starvation da placa.
+
+Ao adicionar um delay usando o vTaskDelay(1000, portTICK_PERIOD_MS);
+	O sistema nao utiliza o recursos durante o tempo de delay.
+	e mesmo ao alterar o numero da prioridade por não estar starvation será executado.
+

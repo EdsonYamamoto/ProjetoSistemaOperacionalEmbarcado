@@ -1,0 +1,9 @@
+﻿  main.c
+C:\Users\T-Gamer\Documents\git\ProjetoSistemaOperacionalEmbarcado\ProjetoSistemaOperacionalEmbarcadoAC1\main.c(68,43): warning C4020: 'vTaskDelay': muitos parâmetros reais
+C:\Users\T-Gamer\Documents\git\ProjetoSistemaOperacionalEmbarcado\ProjetoSistemaOperacionalEmbarcadoAC1\main.c(63,19): warning C4101: 'ul': variável local não referenciada
+C:\Users\T-Gamer\Documents\git\ProjetoSistemaOperacionalEmbarcado\ProjetoSistemaOperacionalEmbarcadoAC1\main.c(84,38): warning C4020: 'vTaskDelay': muitos parâmetros reais
+C:\Users\T-Gamer\Documents\git\ProjetoSistemaOperacionalEmbarcado\ProjetoSistemaOperacionalEmbarcadoAC1\main.c(76,19): warning C4101: 'ul': variável local não referenciada
+C:\Users\T-Gamer\Documents\git\ProjetoSistemaOperacionalEmbarcado\ProjetoSistemaOperacionalEmbarcadoAC1\main.c(140,49): warning C4098: 'vTimerISR': função 'void' retornando um valor
+  supporting_functions.c
+  Gerando Código...
+  LAB3.vcxproj -> C:\Users\T-Gamer\Documents\git\EstudoSistemaOperacionalEmbarcadoII\Lab 3\Example\LAB3\MSVC\Debug\LAB3.exe
