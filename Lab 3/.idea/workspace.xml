@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="be21b713-1f04-43e7-8d75-c86c4e38c873" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/Example/LAB3/MSVC/.vs/LAB3/v16/.suo" beforeDir="false" afterPath="$PROJECT_DIR$/Example/LAB3/MSVC/.vs/LAB3/v16/.suo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/LAB3.log" beforeDir="false" afterPath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/LAB3.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/LAB3.tlog/CL.command.1.tlog" beforeDir="false" afterPath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/LAB3.tlog/CL.command.1.tlog" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/LAB3.tlog/CL.read.1.tlog" beforeDir="false" afterPath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/LAB3.tlog/CL.read.1.tlog" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/LAB3.tlog/CL.write.1.tlog" beforeDir="false" afterPath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/LAB3.tlog/CL.write.1.tlog" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/LAB3.tlog/LAB3.lastbuildstate" beforeDir="false" afterPath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/LAB3.tlog/LAB3.lastbuildstate" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/heap_4.obj" beforeDir="false" afterPath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/heap_4.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/list.obj" beforeDir="false" afterPath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/list.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/port.obj" beforeDir="false" afterPath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/port.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/queue.obj" beforeDir="false" afterPath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/queue.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/supporting_functions.obj" beforeDir="false" afterPath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/supporting_functions.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/tasks.obj" beforeDir="false" afterPath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/tasks.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/vc142.idb" beforeDir="false" afterPath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/vc142.idb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/vc142.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/vc142.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Example/LAB3/main.c" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="1jWkxHTcm7LLqF9DH8Y28FYtgF4" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="be21b713-1f04-43e7-8d75-c86c4e38c873" name="Default Changelist" comment="" />
+      <created>1603927506729</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1603927506729</updated>
+      <workItem from="1603927524361" duration="88000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

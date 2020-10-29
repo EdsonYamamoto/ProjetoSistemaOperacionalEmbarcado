@@ -1,2 +1,4 @@
 C:\Users\T-Gamer\Documents\git\EstudoSistemaOperacionalEmbarcadoII\Lab 3\Example\LAB3\MSVC\Debug\LAB3.exe
 C:\Users\T-Gamer\Documents\git\EstudoSistemaOperacionalEmbarcadoII\Lab 3\Example\LAB3\MSVC\Debug\LAB3.pdb
+C:\Users\T-Gamer\Documents\git\ProjetoSistemaOperacionalEmbarcado\Lab 3\Example\LAB3\MSVC\Debug\LAB3.exe
+C:\Users\T-Gamer\Documents\git\ProjetoSistemaOperacionalEmbarcado\Lab 3\Example\LAB3\MSVC\Debug\LAB3.pdb

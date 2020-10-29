@@ -38,7 +38,7 @@
     <ClCompile Include="..\..\..\Supporting_Functions\supporting_functions.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\ProjetoSistemaOperacionalEmbarcado\ProjetoSistemaOperacionalEmbarcadoAC1\main.c">
+    <ClCompile Include="..\main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

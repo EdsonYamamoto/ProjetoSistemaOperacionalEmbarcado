@@ -1,9 +1,9 @@
 ﻿  main.c
-C:\Users\T-Gamer\Documents\git\ProjetoSistemaOperacionalEmbarcado\ProjetoSistemaOperacionalEmbarcadoAC1\main.c(68,43): warning C4020: 'vTaskDelay': muitos parâmetros reais
-C:\Users\T-Gamer\Documents\git\ProjetoSistemaOperacionalEmbarcado\ProjetoSistemaOperacionalEmbarcadoAC1\main.c(63,19): warning C4101: 'ul': variável local não referenciada
-C:\Users\T-Gamer\Documents\git\ProjetoSistemaOperacionalEmbarcado\ProjetoSistemaOperacionalEmbarcadoAC1\main.c(84,38): warning C4020: 'vTaskDelay': muitos parâmetros reais
-C:\Users\T-Gamer\Documents\git\ProjetoSistemaOperacionalEmbarcado\ProjetoSistemaOperacionalEmbarcadoAC1\main.c(76,19): warning C4101: 'ul': variável local não referenciada
-C:\Users\T-Gamer\Documents\git\ProjetoSistemaOperacionalEmbarcado\ProjetoSistemaOperacionalEmbarcadoAC1\main.c(140,49): warning C4098: 'vTimerISR': função 'void' retornando um valor
-  supporting_functions.c
-  Gerando Código...
-  LAB3.vcxproj -> C:\Users\T-Gamer\Documents\git\EstudoSistemaOperacionalEmbarcadoII\Lab 3\Example\LAB3\MSVC\Debug\LAB3.exe
+C:\Users\T-Gamer\Documents\git\ProjetoSistemaOperacionalEmbarcado\Lab 3\Example\LAB3\main.c(107,43): warning C4020: 'vTaskDelay': muitos parâmetros reais
+C:\Users\T-Gamer\Documents\git\ProjetoSistemaOperacionalEmbarcado\Lab 3\Example\LAB3\main.c(102,20): warning C4101: 'ul': variável local não referenciada
+C:\Users\T-Gamer\Documents\git\ProjetoSistemaOperacionalEmbarcado\Lab 3\Example\LAB3\main.c(124,38): warning C4020: 'vTaskDelay': muitos parâmetros reais
+C:\Users\T-Gamer\Documents\git\ProjetoSistemaOperacionalEmbarcado\Lab 3\Example\LAB3\main.c(115,20): warning C4101: 'ul': variável local não referenciada
+C:\Users\T-Gamer\Documents\git\ProjetoSistemaOperacionalEmbarcado\Lab 3\Example\LAB3\main.c(140,38): warning C4020: 'vTaskDelay': muitos parâmetros reais
+C:\Users\T-Gamer\Documents\git\ProjetoSistemaOperacionalEmbarcado\Lab 3\Example\LAB3\main.c(131,20): warning C4101: 'ul': variável local não referenciada
+C:\Users\T-Gamer\Documents\git\ProjetoSistemaOperacionalEmbarcado\Lab 3\Example\LAB3\main.c(156,4): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _itoa. See online help for details.
+  LAB3.vcxproj -> C:\Users\T-Gamer\Documents\git\ProjetoSistemaOperacionalEmbarcado\Lab 3\Example\LAB3\MSVC\Debug\LAB3.exe

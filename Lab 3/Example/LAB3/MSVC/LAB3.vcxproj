@@ -78,13 +78,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\ProjetoSistemaOperacionalEmbarcado\ProjetoSistemaOperacionalEmbarcadoAC1\main.c" />
     <ClCompile Include="..\..\..\FreeRTOS_Source\list.c" />
     <ClCompile Include="..\..\..\FreeRTOS_Source\portable\MemMang\heap_4.c" />
     <ClCompile Include="..\..\..\FreeRTOS_Source\portable\MSVC-MingW\port.c" />
     <ClCompile Include="..\..\..\FreeRTOS_Source\queue.c" />
     <ClCompile Include="..\..\..\FreeRTOS_Source\tasks.c" />
     <ClCompile Include="..\..\..\Supporting_Functions\supporting_functions.c" />
+    <ClCompile Include="..\main.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\FreeRTOS_Source\include\event_groups.h" />
