@@ -39,6 +39,9 @@ typedef struct
 QueueHandle_t queueAnalyzer;//Objeto da queue
 /*-----------------------------------------------------------*/
 
+/* Global Variables */
+xSemaphoreHandle xSemaphore;
+
 int main( void )
 {
 	Elevador* elevador1 = malloc(sizeof * elevador1);
@@ -53,6 +56,9 @@ int main( void )
 	elevador1->Andar = 5;
 	elevador1->PortaFechada = false;
 
+	/* Create the Semaphore for synchronization between UART and LED task */
+	vSemaphoreCreateBinary(xSemaphore)
+	//xSemaphoreGive(xSemaphore);
 	/* Create one of the two tasks. */
 	queueAnalyzer = xQueueCreate(10, sizeof(uint32_t));//Cria a queue *buffer* com 10 slots de 4 Bytes
 
@@ -66,7 +72,7 @@ int main( void )
 	xTaskCreate(	vTask2,		/* Pointer to the function that implements the task. */
 					"Task 2",	/* Text name for the task.  This is to facilitate debugging only. */
 					1000,		/* Stack depth - most small microcontrollers will use much less stack than this. */
-					(void*)elevador1,		/* We are not using the task parameter. */
+					NULL,		/* We are not using the task parameter. */
 					1,			/* This task will run at priority 1. */
 					NULL);		/* We are not using the task handle. */
 
@@ -104,7 +110,12 @@ void vTask1( void *pvParameters )
 	for( ;; )
 	{
         vPrintString(pcTaskName);
-        vTaskDelay(500, portTICK_PERIOD_MS);
+        vTaskDelay(300, portTICK_PERIOD_MS);
+		vPrintString("\r\nBloqueando vTASK1\r\n");
+		xSemaphoreTake(xSemaphore, portMAX_DELAY);
+		uint16_t xHigherPriorityTaskWoken;
+		vPrintString("\r\nSoltando vTASK1\r\n");
+		xSemaphoreGiveFromISR(xSemaphore, &xHigherPriorityTaskWoken);
 	}
 }
 /*-----------------------------------------------------------*/
@@ -114,14 +125,19 @@ void vTask2( void *pvParameters )
 	const char *pcTaskName = "Task 2 is running\r\n";
 	volatile uint32_t ul;
 
-	Elevador* elevador = (Elevador *)pvParameters;
 	/* As per most tasks, this task is implemented in an infinite loop. */
 	for( ;; )
 	{
-		vPrintString(elevador->Nome);
+		vPrintString(pcTaskName);
+		vPrintString("\r\n");
+		
 		/* Print out the name of this task. */
-		vPrintString( pcTaskName );
-		vTaskDelay(1000, portTICK_PERIOD_MS);
+		vTaskDelay(400, portTICK_PERIOD_MS);
+		vPrintString("\r\nBloqueando vTASK2\r\n");
+		xSemaphoreTake(xSemaphore, portMAX_DELAY);
+		uint16_t xHigherPriorityTaskWoken;
+		vPrintString("\r\nSoltando vTASK2\r\n");
+		xSemaphoreGiveFromISR(xSemaphore, &xHigherPriorityTaskWoken);
 	}
 }
 
@@ -134,7 +150,6 @@ void vATask(void* pvParameters)
 	/* As per most tasks, this task is implemented in an infinite loop. */
 	for (;; )
 	{
-
 		xQueueSend(queueAnalyzer, &elevador, portMAX_DELAY);
 
 		vTaskDelay(1500, portTICK_PERIOD_MS);
