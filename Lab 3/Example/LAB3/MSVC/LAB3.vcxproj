@@ -93,6 +93,7 @@
     <ClInclude Include="..\..\..\FreeRTOS_Source\include\semphr.h" />
     <ClInclude Include="..\..\..\FreeRTOS_Source\include\task.h" />
     <ClInclude Include="..\..\..\FreeRTOS_Source\include\timers.h" />
+    <ClInclude Include="..\demo_config.h" />
     <ClInclude Include="..\FreeRTOSConfig.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

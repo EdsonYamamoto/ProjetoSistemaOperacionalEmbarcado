@@ -64,5 +64,8 @@
     <ClInclude Include="..\FreeRTOSConfig.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\demo_config.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

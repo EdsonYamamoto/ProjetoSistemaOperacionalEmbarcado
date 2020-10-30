@@ -1,9 +1,3 @@
-/*
-    Edson Kazumi Yamamoto 081368
-    Lauren Maria Ferreira 150017
-    Eloa Camilo 150700
- */
-
 /* FreeRTOS.org includes. */
 #include "FreeRTOS.h"
 #include "task.h"
@@ -26,6 +20,9 @@ void vATask( void *pvParameters);
 
 void vLiftAnalyzer(void* pvParameters);
 
+void vLiftDoorCheck(void* pvParameters);
+void vLiftMetor(void* pvParameters);
+
 const char* pcTextForTask1 = "Task 1 is running \r\n";
 const char* pcTextForTask2 = "Task 2 is running \r\n";
 
@@ -33,10 +30,19 @@ typedef struct
 {
 	boolean PortaFechada;
 	char Nome[6];  
-	int	 Andar;
+	int	Andar;
+	int ProximosAndares[10];
+	int MotorFuncionando;
 } Elevador; 
 
+typedef struct
+{
+	Elevador elevador[3];
+	int Proximos[10];
+} ControleElevador;
+
 QueueHandle_t queueAnalyzer;//Objeto da queue
+QueueHandle_t queueLifter;//Objeto da queue
 /*-----------------------------------------------------------*/
 
 /* Global Variables */
@@ -44,7 +50,9 @@ xSemaphoreHandle xSemaphore;
 
 int main( void )
 {
+
 	Elevador* elevador1 = malloc(sizeof * elevador1);
+
 	//char nome_cliente[] = "Fulano";
 
 	elevador1->Nome[0] = 'f';
@@ -55,13 +63,15 @@ int main( void )
 	elevador1->Nome[5] = 'o';
 	elevador1->Andar = 5;
 	elevador1->PortaFechada = false;
+	elevador1->MotorFuncionando = 0;
 
 	/* Create the Semaphore for synchronization between UART and LED task */
 	vSemaphoreCreateBinary(xSemaphore)
 	//xSemaphoreGive(xSemaphore);
 	/* Create one of the two tasks. */
-	queueAnalyzer = xQueueCreate(10, sizeof(uint32_t));//Cria a queue *buffer* com 10 slots de 4 Bytes
-
+	queueAnalyzer = xQueueCreate(10, sizeof(uint32_t));
+	queueLifter = xQueueCreate(10, sizeof(uint32_t));
+	
 	xTaskCreate(	vTask1,		/* Pointer to the function that implements the task. */
 					"Task 1",	/* Text name for the task.  This is to facilitate debugging only. */
 					1000,		/* Stack depth - most small microcontrollers will use much less stack than this. */
@@ -151,7 +161,8 @@ void vATask(void* pvParameters)
 	for (;; )
 	{
 		xQueueSend(queueAnalyzer, &elevador, portMAX_DELAY);
-
+		xQueueSend(queueLifter, &elevador, portMAX_DELAY);
+		
 		vTaskDelay(1500, portTICK_PERIOD_MS);
 	}
 }
@@ -170,7 +181,42 @@ void vLiftAnalyzer(void* pvParameters)
 			char snum[5];
 			itoa(elevador->Andar, snum, 10);
 			vPrintString(snum);
+			vPrintString("\nporta: "); 
+			vPrintString(elevador->PortaFechada);
+			vPrintString("\'motor: ");
+			vPrintString(elevador->MotorFuncionando);
+
+
 			vPrintString("\n--------------------------\n");
 		}
+	}
+}
+
+void vLiftDoorCheck(void* pvParameters)
+{
+	Elevador* elevador;
+	while (1)
+	{
+		if (xQueueReceive(queueAnalyzer, &elevador, portMAX_DELAY) == pdPASS) {
+			if (elevador->PortaFechada == true) {
+				vLiftMetor(elevador);
+			}
+			else {
+				vPrintString("porta aberta fecha isso");
+			}
+		}
+	}
+}
+
+void vLiftMetor(Elevador* elevador)
+{
+	if (elevador->MotorFuncionando == 1) {
+		vPrintString("motor subindo");
+	}
+	else if (elevador->MotorFuncionando == 0) {
+		vPrintString("motor parado");
+	}
+	else if (elevador->MotorFuncionando == -1) {
+		vPrintString("motor descendo");
 	}
 }
