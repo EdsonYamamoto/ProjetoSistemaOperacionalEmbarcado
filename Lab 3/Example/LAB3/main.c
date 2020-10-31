@@ -218,7 +218,21 @@ void vLiftController(void* pvParameters)
 
 			for (int i = 0; i < qtdLifters; i++) {
 				if (controlador->elevador[i]->Andar == elevadorMaisProximo) {
-					//aqui devera ser implementada a logica para envio adicionar o elevador.
+					if(andar > controlador->elevador[i]->Andar)
+					{
+						for(int j = controlador->elevador[i]->Andar + 1; j <andar; j++)
+						{
+							controlador->elevador[i]->ProximosAndares[0] = j;
+						}
+					}
+
+					else if(andar < controlador->elevador[i]->Andar)
+					{
+						for(int j = controlador->elevador[i]->Andar - 1; j > andar; j--)
+						{
+							controlador->elevador[i]->ProximosAndares[0] = j;
+						}
+					}
 
 					xQueueSend(queueAnalyzer, &controlador->elevador[i], portMAX_DELAY);
 					break;
