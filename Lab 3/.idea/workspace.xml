@@ -1,27 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
+    <generated />
+  </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="be21b713-1f04-43e7-8d75-c86c4e38c873" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/Example/LAB3/MSVC/.vs/LAB3/v16/.suo" beforeDir="false" afterPath="$PROJECT_DIR$/Example/LAB3/MSVC/.vs/LAB3/v16/.suo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Example/LAB3/MSVC/.vs/LAB3/v16/Browse.VC.db" beforeDir="false" afterPath="$PROJECT_DIR$/Example/LAB3/MSVC/.vs/LAB3/v16/Browse.VC.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Example/LAB3/MSVC/.vs/LAB3/v16/ipch/AutoPCH/482f8015aee9f18/MAIN.ipch" beforeDir="false" afterPath="$PROJECT_DIR$/Example/LAB3/MSVC/.vs/LAB3/v16/ipch/AutoPCH/482f8015aee9f18/MAIN.ipch" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Example/LAB3/MSVC/.vs/LAB3/v16/ipch/AutoPCH/933e898700a713e3/SUPPORTING_FUNCTIONS.ipch" beforeDir="false" afterPath="$PROJECT_DIR$/Example/LAB3/MSVC/.vs/LAB3/v16/ipch/AutoPCH/933e898700a713e3/SUPPORTING_FUNCTIONS.ipch" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Example/LAB3/MSVC/.vs/LAB3/v16/ipch/AutoPCH/a79c1cf77b5c53e5/LIST.ipch" beforeDir="false" afterPath="$PROJECT_DIR$/Example/LAB3/MSVC/.vs/LAB3/v16/ipch/AutoPCH/a79c1cf77b5c53e5/LIST.ipch" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/LAB3.exe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/LAB3.ilk" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/LAB3.log" beforeDir="false" afterPath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/LAB3.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/LAB3.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/LAB3.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/LAB3.tlog/CL.command.1.tlog" beforeDir="false" afterPath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/LAB3.tlog/CL.command.1.tlog" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/LAB3.tlog/CL.read.1.tlog" beforeDir="false" afterPath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/LAB3.tlog/CL.read.1.tlog" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/LAB3.tlog/CL.write.1.tlog" beforeDir="false" afterPath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/LAB3.tlog/CL.write.1.tlog" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/LAB3.tlog/LAB3.lastbuildstate" beforeDir="false" afterPath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/LAB3.tlog/LAB3.lastbuildstate" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/heap_4.obj" beforeDir="false" afterPath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/heap_4.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/list.obj" beforeDir="false" afterPath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/list.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/port.obj" beforeDir="false" afterPath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/port.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/queue.obj" beforeDir="false" afterPath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/queue.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/LAB3.tlog/link.command.1.tlog" beforeDir="false" afterPath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/LAB3.tlog/link.command.1.tlog" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/LAB3.tlog/link.read.1.tlog" beforeDir="false" afterPath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/LAB3.tlog/link.read.1.tlog" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/LAB3.tlog/link.write.1.tlog" beforeDir="false" afterPath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/LAB3.tlog/link.write.1.tlog" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/main.obj" beforeDir="false" afterPath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/main.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/supporting_functions.obj" beforeDir="false" afterPath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/supporting_functions.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/tasks.obj" beforeDir="false" afterPath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/tasks.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/vc142.idb" beforeDir="false" afterPath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/vc142.idb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/vc142.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/Example/LAB3/MSVC/Debug/vc142.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Example/LAB3/main.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Example/LAB3/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/Example/LAB3/main.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -36,6 +52,8 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="cf.first.check.clang-format" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Elevator-Controller" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -46,10 +64,17 @@
       <option name="presentableId" value="Default" />
       <updated>1603927506729</updated>
       <workItem from="1603927524361" duration="88000" />
+      <workItem from="1604166378525" duration="30000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1604166405793">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1604166405793" />
   </component>
 </project>

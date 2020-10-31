@@ -7,6 +7,22 @@
 #include "supporting_functions.h"
 #include <semphr.h>
 
+// Macros for button GPIO lines
+#define SW1 (0xE000E000UL)
+#define SW2 (0xE000E000UL)
+#define SW3 (0xE000E000UL)
+#define SW4 (0xE000E000UL)
+#define SW5 (0xE000E000UL)
+#define SW6 (0xE000E000UL)
+#define SW7 (0xE000E000UL)
+#define SW8 (0xE000E000UL)
+#define SW9 (0xE000E000UL)
+#define SW10 (0xE000E000UL)
+#define SWOpen (0xE000E000UL)
+#define SWClose (0xE000E000UL)
+
+#define SwDelay 1000
+
 #define LONG_TIME 0xffff
 #define TICKS_TO_WAIT    10
 
@@ -14,11 +30,20 @@
 #define mainDELAY_LOOP_COUNT		( 0xffffff )
 
 /* The task functions. */
-void vTask1( void *pvParameters );
-void vTask2( void *pvParameters );
 void vATask( void *pvParameters);
 
 void vLiftAnalyzer(void* pvParameters);
+void taskButtons(void* pvParameters);
+
+void vLiftController(void* pvParameters);
+
+bool CheckAndDebounceD(uint32_t swNum);
+bool CheckAndDebounceC(uint32_t swNum);
+
+
+bool mPORTDReadBits(uint32_t swNum);
+bool mPORTCReadBits(uint32_t swNum);
+
 
 void vLiftDoorCheck(void* pvParameters);
 void vLiftMetor(void* pvParameters);
@@ -31,15 +56,20 @@ typedef struct
 	boolean PortaFechada;
 	char Nome[6];  
 	int	Andar;
-	int ProximosAndares[10];
-	int MotorFuncionando;
+	int ProximosAndares[3];
+	int MotorFuncionando;	/* 0 - andar parado
+							   1 - subindo
+							   -1 - descendo
+							*/
 } Elevador; 
 
 typedef struct
 {
-	Elevador elevador[3];
+	Elevador *elevador[3];
 	int Proximos[10];
 } ControleElevador;
+
+Elevador* CreateLift();
 
 QueueHandle_t queueAnalyzer;//Objeto da queue
 QueueHandle_t queueLifter;//Objeto da queue
@@ -47,109 +77,49 @@ QueueHandle_t queueLifter;//Objeto da queue
 
 /* Global Variables */
 xSemaphoreHandle xSemaphore;
+int qtdLifters = 3; 
 
 int main( void )
 {
-
-	Elevador* elevador1 = malloc(sizeof * elevador1);
-
-	//char nome_cliente[] = "Fulano";
-
-	elevador1->Nome[0] = 'f';
-	elevador1->Nome[1] = 'u';
-	elevador1->Nome[2] = 'l';
-	elevador1->Nome[3] = 'a';
-	elevador1->Nome[4] = 'n';
-	elevador1->Nome[5] = 'o';
-	elevador1->Andar = 5;
-	elevador1->PortaFechada = false;
-	elevador1->MotorFuncionando = 0;
-
+	vPrintString("Inicializando projeto de sistemas operacionais embarcados freertos");
+	ControleElevador* controlador = malloc(sizeof * controlador);
+	for(int i =0;i<qtdLifters;i++)
+		controlador->elevador[i] = CreateLift();
+	
 	/* Create the Semaphore for synchronization between UART and LED task */
 	vSemaphoreCreateBinary(xSemaphore)
 	//xSemaphoreGive(xSemaphore);
 	/* Create one of the two tasks. */
 	queueAnalyzer = xQueueCreate(10, sizeof(uint32_t));
 	queueLifter = xQueueCreate(10, sizeof(uint32_t));
-	
-	xTaskCreate(	vTask1,		/* Pointer to the function that implements the task. */
-					"Task 1",	/* Text name for the task.  This is to facilitate debugging only. */
-					1000,		/* Stack depth - most small microcontrollers will use much less stack than this. */
-					NULL,		/* We are not using the task parameter. */ 
-					1,			/* This task will run at priority 1. */
-					NULL );		/* We are not using the task handle. */
 
-	xTaskCreate(	vTask2,		/* Pointer to the function that implements the task. */
-					"Task 2",	/* Text name for the task.  This is to facilitate debugging only. */
-					1000,		/* Stack depth - most small microcontrollers will use much less stack than this. */
-					NULL,		/* We are not using the task parameter. */
-					1,			/* This task will run at priority 1. */
-					NULL);		/* We are not using the task handle. */
+	xTaskCreate(	taskButtons,	
+					"Task Buttons",
+					1000,	
+					NULL,	
+					1,	
+					NULL);
 
-	xTaskCreate(	vATask,		/* Pointer to the function that implements the task. */
-					"Task A",	/* Text name for the task.  This is to facilitate debugging only. */
-					1000,		/* Stack depth - most small microcontrollers will use much less stack than this. */
-					(void*)elevador1,		/* We are not using the task parameter. */
-					1,			/* This task will run at priority 1. */
-					NULL);		/* We are not using the task handle. */
+	xTaskCreate(	vLiftAnalyzer,
+					"Task analyzer",
+					1000,	
+					NULL,	
+					1,		
+					NULL);	
 
-	xTaskCreate(	vLiftAnalyzer,		/* Pointer to the function that implements the task. */
-					"Task analyzer",	/* Text name for the task.  This is to facilitate debugging only. */
-					1000,		/* Stack depth - most small microcontrollers will use much less stack than this. */
-					(void*)elevador1,		/* We are not using the task parameter. */
-					1,			/* This task will run at priority 1. */
-					NULL);		/* We are not using the task handle. */
-	/* Start the scheduler to start the tasks executing. */
+	xTaskCreate(	vLiftController,	
+					"Task controller",	
+					1000,	
+					(void*)controlador,		
+					1,	
+					NULL);	
 	vTaskStartScheduler();	
 
-	/* The following line should never be reached because vTaskStartScheduler() 
-	will only return if there was not enough FreeRTOS heap memory available to
-	create the Idle and (if configured) Timer tasks.  Heap management, and
-	techniques for trapping heap exhaustion, are described in the book text. */
 	for( ;; );
 	return 0;
 }
 
 /*-----------------------------------------------------------*/
-
-void vTask1( void *pvParameters )
-{
-	const char *pcTaskName = "Task 1 is running\r\n";
-	volatile uint32_t ul;
-
-	for( ;; )
-	{
-        vPrintString(pcTaskName);
-        vTaskDelay(300, portTICK_PERIOD_MS);
-		vPrintString("\r\nBloqueando vTASK1\r\n");
-		xSemaphoreTake(xSemaphore, portMAX_DELAY);
-		uint16_t xHigherPriorityTaskWoken;
-		vPrintString("\r\nSoltando vTASK1\r\n");
-		xSemaphoreGiveFromISR(xSemaphore, &xHigherPriorityTaskWoken);
-	}
-}
-/*-----------------------------------------------------------*/
-
-void vTask2( void *pvParameters )
-{
-	const char *pcTaskName = "Task 2 is running\r\n";
-	volatile uint32_t ul;
-
-	/* As per most tasks, this task is implemented in an infinite loop. */
-	for( ;; )
-	{
-		vPrintString(pcTaskName);
-		vPrintString("\r\n");
-		
-		/* Print out the name of this task. */
-		vTaskDelay(400, portTICK_PERIOD_MS);
-		vPrintString("\r\nBloqueando vTASK2\r\n");
-		xSemaphoreTake(xSemaphore, portMAX_DELAY);
-		uint16_t xHigherPriorityTaskWoken;
-		vPrintString("\r\nSoltando vTASK2\r\n");
-		xSemaphoreGiveFromISR(xSemaphore, &xHigherPriorityTaskWoken);
-	}
-}
 
 void vATask(void* pvParameters)
 {
@@ -157,11 +127,9 @@ void vATask(void* pvParameters)
 	volatile uint32_t ul;
 	Elevador* elevador = (Elevador*)pvParameters;
 
-	/* As per most tasks, this task is implemented in an infinite loop. */
 	for (;; )
 	{
 		xQueueSend(queueAnalyzer, &elevador, portMAX_DELAY);
-		xQueueSend(queueLifter, &elevador, portMAX_DELAY);
 		
 		vTaskDelay(1500, portTICK_PERIOD_MS);
 	}
@@ -186,8 +154,76 @@ void vLiftAnalyzer(void* pvParameters)
 			vPrintString("\'motor: ");
 			vPrintString(elevador->MotorFuncionando);
 
-
 			vPrintString("\n--------------------------\n");
+		}
+	}
+}
+
+/*
+	Logica do controlador para manipular os elevadores.
+*/
+void vLiftController(void* pvParameters)
+{
+	ControleElevador* controlador = (ControleElevador*)pvParameters;
+
+	char* comando;
+	int andar = -1;
+	while (1)
+	{
+		if (xQueueReceive(queueLifter, &comando, portMAX_DELAY) == pdPASS) {
+			
+			if (comando = "0") {
+				andar = atoi(comando);
+			}
+			else if (comando = "1") {
+				andar = atoi(comando);
+			}
+			else if (comando = "2") {
+				andar = atoi(comando);
+			}
+			else if (comando = "3") {
+				andar = atoi(comando);
+			}
+			else if (comando = "4") {
+				andar = atoi(comando);
+			}
+			else if (comando = "5") {
+				andar = atoi(comando);
+			}
+			else if (comando = "6") {
+				andar = atoi(comando);
+			}
+			else if (comando = "7") {
+				andar = atoi(comando);
+			}
+			else if (comando = "8") {
+				andar = atoi(comando);
+			}
+			else if (comando = "9") {
+				andar = atoi(comando);
+			}
+			if (andar >= 0 && andar <= 10)
+				controlador->Proximos[0] = andar;
+
+			int elevadorMaisProximo = 0;
+			Elevador elevadorProx;
+			for (int i = 0; i < qtdLifters; i++) {
+				if (controlador->elevador[i]->PortaFechada == false) {
+					int diferenca = controlador->elevador[i]->Andar - andar;
+					if (diferenca < 0)diferenca *= -1;
+					if (elevadorMaisProximo < diferenca) elevadorMaisProximo = controlador->elevador[i]->Andar;
+					
+				}
+			}
+
+			for (int i = 0; i < qtdLifters; i++) {
+				if (controlador->elevador[i]->Andar == elevadorMaisProximo) {
+					//aqui devera ser implementada a logica para envio adicionar o elevador.
+
+					xQueueSend(queueAnalyzer, &controlador->elevador[i], portMAX_DELAY);
+					break;
+				}
+			}
 		}
 	}
 }
@@ -219,4 +255,138 @@ void vLiftMetor(Elevador* elevador)
 	else if (elevador->MotorFuncionando == -1) {
 		vPrintString("motor descendo");
 	}
+}
+
+static bool CheckAndDebounceD(uint32_t swNum)
+{
+	bool sw_pressed = false;
+
+	if (!mPORTDReadBits(swNum))
+	{
+		vTaskDelay(SwDelay);
+		if (!mPORTDReadBits(swNum))
+			sw_pressed = true;
+	}
+
+	return sw_pressed;
+}
+
+static bool CheckAndDebounceC(uint32_t swNum)
+{
+	bool sw_pressed = false;
+
+	if (!mPORTCReadBits(swNum))
+	{
+		vTaskDelay(SwDelay);
+		if (!mPORTCReadBits(swNum))
+			sw_pressed = true;
+	}
+
+	return sw_pressed;
+}
+
+static const TickType_t pollDelay = 100 / portTICK_PERIOD_MS;
+
+bool mPORTDReadBits(uint32_t swNum) {
+	return true;
+}
+bool mPORTCReadBits(uint32_t swNum) {
+	return true;
+}
+
+
+// Handle button presses and debouncing
+void taskButtons(void* pvParameters)
+{
+	while (1)
+	{
+		if (CheckAndDebounceD(SW1))
+		{
+			vPrintString("1");
+			xQueueSend(queueLifter, &"1", portMAX_DELAY);
+		}
+		if (CheckAndDebounceD(SW2))
+		{
+			vPrintString("2");
+			xQueueSend(queueLifter, &"2", portMAX_DELAY);
+		}
+		if (CheckAndDebounceD(SW3))
+		{
+			vPrintString("3");
+			xQueueSend(queueLifter, &"3", portMAX_DELAY);
+		}
+		if (CheckAndDebounceD(SW4))
+		{
+			vPrintString("4");
+			xQueueSend(queueLifter, &"4", portMAX_DELAY);
+		}
+		if (CheckAndDebounceD(SW5))
+		{
+			vPrintString("5");
+			xQueueSend(queueLifter, &"5", portMAX_DELAY);
+		}
+		if (CheckAndDebounceD(SW6))
+		{
+			vPrintString("6");
+			xQueueSend(queueLifter, &"6", portMAX_DELAY);
+		}
+		if (CheckAndDebounceD(SW7))
+		{
+			vPrintString("7");
+			xQueueSend(queueLifter, &"7", portMAX_DELAY);
+		}
+		if (CheckAndDebounceD(SW8))
+		{
+			vPrintString("8");
+			xQueueSend(queueLifter, &"8", portMAX_DELAY);
+		}
+		if (CheckAndDebounceD(SW9))
+		{
+			vPrintString("9");
+			xQueueSend(queueLifter, &"9", portMAX_DELAY);
+		}
+		if (CheckAndDebounceD(SW10))
+		{
+			vPrintString("10");
+			xQueueSend(queueLifter, &"0", portMAX_DELAY);
+		}
+
+		/*
+		if (CheckAndDebounceC(SWOpen))
+		{
+			vPrintString("10");
+			xQueueSend(queueLifter, &"O", portMAX_DELAY);
+
+		}
+
+		if (CheckAndDebounceC(SWClose))
+		{
+			vPrintString("10");
+			xQueueSend(queueLifter, &"C", portMAX_DELAY);
+
+		}
+		*/
+		vTaskDelay(pollDelay);
+	}
+}
+
+
+Elevador* CreateLift() {
+
+	Elevador* elevador = malloc(sizeof * elevador);
+
+	elevador->Nome[0] = 'f';
+	elevador->Nome[1] = 'u';
+	elevador->Nome[2] = 'l';
+	elevador->Nome[3] = 'a';
+	elevador->Nome[4] = 'n';
+	elevador->Nome[5] = 'o';
+	elevador->Andar = 0;
+	elevador->PortaFechada = false;
+	elevador->MotorFuncionando = 0;
+	elevador->ProximosAndares[0] = 0;
+	elevador->ProximosAndares[1] = 0;
+	elevador->ProximosAndares[2] = 0;
+
+	return &elevador;
 }
