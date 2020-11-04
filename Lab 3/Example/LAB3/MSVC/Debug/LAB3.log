@@ -1,10 +1,11 @@
 ﻿  main.c
-C:\Users\T-Gamer\Documents\git\ProjetoSistemaOperacionalEmbarcado\Lab 3\Example\LAB3\main.c(249,26): warning C4047: 'função': 'const char *' difere em níveis de indireção de 'char (*)[1]'
-C:\Users\T-Gamer\Documents\git\ProjetoSistemaOperacionalEmbarcado\Lab 3\Example\LAB3\main.c(249,26): warning C4024: 'vPrintString': tipos diferentes para parâmetro formal e real 1
-C:\Users\T-Gamer\Documents\git\ProjetoSistemaOperacionalEmbarcado\Lab 3\Example\LAB3\main.c(248,6): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _itoa. See online help for details.
-C:\Users\T-Gamer\Documents\git\ProjetoSistemaOperacionalEmbarcado\Lab 3\Example\LAB3\main.c(283,37): warning C4020: 'vTaskDelay': muitos parâmetros reais
-C:\Users\T-Gamer\Documents\git\ProjetoSistemaOperacionalEmbarcado\Lab 3\Example\LAB3\main.c(275,3): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _itoa. See online help for details.
-C:\Users\T-Gamer\Documents\git\ProjetoSistemaOperacionalEmbarcado\Lab 3\Example\LAB3\main.c(277,1): warning C4047: 'inicializando': 'char *' difere em níveis de indireção de 'char (*)[1]'
-C:\Users\T-Gamer\Documents\git\ProjetoSistemaOperacionalEmbarcado\Lab 3\Example\LAB3\main.c(267,10): warning C4101: 't': variável local não referenciada
-C:\Users\T-Gamer\Documents\git\ProjetoSistemaOperacionalEmbarcado\Lab 3\Example\LAB3\main.c(300,4): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _itoa. See online help for details.
+C:\Users\T-Gamer\Documents\git\ProjetoSistemaOperacionalEmbarcado\Lab 3\Example\LAB3\main.c(209,26): warning C4047: 'função': 'const char *' difere em níveis de indireção de 'char (*)[1]'
+C:\Users\T-Gamer\Documents\git\ProjetoSistemaOperacionalEmbarcado\Lab 3\Example\LAB3\main.c(209,26): warning C4024: 'vPrintString': tipos diferentes para parâmetro formal e real 1
+C:\Users\T-Gamer\Documents\git\ProjetoSistemaOperacionalEmbarcado\Lab 3\Example\LAB3\main.c(208,6): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _itoa. See online help for details.
+C:\Users\T-Gamer\Documents\git\ProjetoSistemaOperacionalEmbarcado\Lab 3\Example\LAB3\main.c(281,37): warning C4020: 'vTaskDelay': muitos parâmetros reais
+C:\Users\T-Gamer\Documents\git\ProjetoSistemaOperacionalEmbarcado\Lab 3\Example\LAB3\main.c(273,3): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _itoa. See online help for details.
+C:\Users\T-Gamer\Documents\git\ProjetoSistemaOperacionalEmbarcado\Lab 3\Example\LAB3\main.c(275,1): warning C4047: 'inicializando': 'char *' difere em níveis de indireção de 'char (*)[1]'
+C:\Users\T-Gamer\Documents\git\ProjetoSistemaOperacionalEmbarcado\Lab 3\Example\LAB3\main.c(265,10): warning C4101: 't': variável local não referenciada
+C:\Users\T-Gamer\Documents\git\ProjetoSistemaOperacionalEmbarcado\Lab 3\Example\LAB3\main.c(298,4): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _itoa. See online help for details.
+C:\Users\T-Gamer\Documents\git\ProjetoSistemaOperacionalEmbarcado\Lab 3\Example\LAB3\main.c(337,39): warning C4020: 'vTaskDelay': muitos parâmetros reais
   LAB3.vcxproj -> C:\Users\T-Gamer\Documents\git\ProjetoSistemaOperacionalEmbarcado\Lab 3\Example\LAB3\MSVC\Debug\LAB3.exe

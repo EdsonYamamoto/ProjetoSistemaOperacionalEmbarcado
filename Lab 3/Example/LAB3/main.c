@@ -48,9 +48,6 @@ bool mPORTDReadBits(uint32_t swNum);
 bool mPORTCReadBits(uint32_t swNum);
 
 
-void vLiftDoorCheck(void* pvParameters);
-void vLiftMetor(void* pvParameters);
-
 const char* pcTextForTask1 = "Task 1 is running \r\n";
 const char* pcTextForTask2 = "Task 2 is running \r\n";
 
@@ -113,14 +110,14 @@ int main( void )
 					NULL,
 					1,
 					NULL);
-	
+	/*
 	xTaskCreate(	taskButtons,	
 					"Task Buttons",
 					1000,	
 					NULL,	
 					1,	
 					NULL);
-
+					*/
 	xTaskCreate(	vLiftController,
 					"Task controller",
 					1000,
@@ -135,12 +132,12 @@ int main( void )
 					1,		
 					NULL);	
 	
-	//xTaskCreate(	vFuncionarElevador,
-	//				"Task Elevador",
-	//				1000,
-	//				NULL,
-	//				1,
-	//				NULL);
+	xTaskCreate(	vFuncionarElevador,
+					"Task Elevador",
+					1000,
+					NULL,
+					1,
+					NULL);
 		
 
 	vTaskStartScheduler();	
@@ -198,6 +195,23 @@ void vLiftController(void* pvParameters)
 			}
 			else {}
 
+			if (controlador->elevador[0]->MotorFuncionando == true && controlador->elevador[1]->MotorFuncionando == true && controlador->elevador[2]->MotorFuncionando == true)
+			{
+				int ponteiro = controlador->PonteiroProximos;
+				controlador->Proximos[ponteiro] = andar;
+				controlador->PonteiroProximos++;
+				vPrintString("Proximos: ");
+				for (int x = 0; x < 10; x++) {
+					vPrintString("[");
+					char buffer[1];
+					int buf = controlador->Proximos[x];
+					itoa(buf, buffer, 10);
+					vPrintString(&buffer);
+					vPrintString("]");
+				}
+			}
+
+
 			/*
 			Pega o elevador mais proximo
 			*/
@@ -224,7 +238,7 @@ void vLiftController(void* pvParameters)
 					else
 						controlador->elevador[i]->MotorFuncionando = 1;
 
-
+					controlador->elevador[i]->Andar = andar;
 					controlador->elevador[i]->PortaFechada = true;
 					controlador->elevador[i]->MotorFuncionando = true;
 
@@ -235,22 +249,6 @@ void vLiftController(void* pvParameters)
 				}
 			}
 
-			if (controlador->elevador[0]->MotorFuncionando == true && controlador->elevador[1]->MotorFuncionando == true && controlador->elevador[2]->MotorFuncionando == true)
-			{
-				int ponteiro = controlador->PonteiroProximos;
-				controlador->Proximos[ponteiro] = andar;
-				controlador->PonteiroProximos++;
-				vPrintString("Proximos: ");
-				for (int x = 0; x < 10; x++) {
-					vPrintString("[");
-					char buffer[1];
-					int buf = controlador->Proximos[x];
-					itoa(buf, buffer, 10);
-					vPrintString(&buffer);
-					vPrintString("]");
-				}
-				//vPrintString(controlador->Proximos);
-			}
 		}
 	}
 }
@@ -314,46 +312,39 @@ void vLiftAnalyzer(void* pvParameters)
 }
 
 
-void vLiftDoorCheck(void* pvParameters)
-{
-	Elevador* elevador;
-	while (100)
-	{
-		if (xQueueReceive(queueAnalyzer, &elevador, portMAX_DELAY) == pdPASS) {
-			if (elevador->PortaFechada == true) {
-				vLiftMetor(elevador);
-			}
-			else {
-				vPrintString("porta aberta fecha isso");
-			}
-		}
-	}
-}
-
-
 void vFuncionarElevador(void* pvParameters)
 {
 
 	Elevador* elevador;
-	while (100)
+	while (1)
 	{
-		vPrintString("teste");
 		if (xQueueReceive(queueMotor, &elevador, portMAX_DELAY) == pdPASS) {
-				vPrintString("teste");
-		}
-	}
-}
+			vPrintString("\n\n");
+			vPrintString(elevador->Nome);
+			vPrintString("\t");
+			
+			if (elevador->MotorFuncionando == 1) {
+				vPrintString("motor subindo");
+			}
+			else if (elevador->MotorFuncionando == 0) {
+				vPrintString("motor parado");
+			}
+			else if (elevador->MotorFuncionando == -1) {
+				vPrintString("motor descendo");
+			}
 
-void vLiftMetor(Elevador* elevador)
-{
-	if (elevador->MotorFuncionando == 1) {
-		vPrintString("motor subindo");
-	}
-	else if (elevador->MotorFuncionando == 0) {
-		vPrintString("motor parado");
-	}
-	else if (elevador->MotorFuncionando == -1) {
-		vPrintString("motor descendo");
+			vPrintString("\n");
+			vTaskDelay(1000, portTICK_PERIOD_MS);
+
+
+			vPrintString("\n\n");
+			vPrintString("*elevador desocupado ");
+			vPrintString(elevador->Nome);
+			vPrintString("\t");
+			elevador->MotorFuncionando = 0;
+			elevador->PortaFechada = false;
+			vPrintString("\n");
+		}
 	}
 }
 
