@@ -302,9 +302,9 @@ void vLiftAnalyzer(void* pvParameters)
 			else vPrintString("aberta");
 			
 			vPrintString("\nmotor: ");
-			if (elevador->MotorFuncionando>0) vPrintString("rodando");
+			if (elevador->MotorFuncionando>0) vPrintString("subindo");
 			else if (elevador->MotorFuncionando == 0) vPrintString("parado");
-			else vPrintString("desligado");
+			else vPrintString("descendo");
 
 			vPrintString("\n--------------------------\n");
 		}
