@@ -6,6 +6,7 @@
 /* Demo includes. */
 #include "supporting_functions.h"
 #include <semphr.h>
+#include <stdlib.h>
 
 // Macros for button GPIO lines
 #define SW1 (0xE000E000UL)
@@ -34,8 +35,10 @@ void vATask( void *pvParameters);
 
 void vLiftAnalyzer(void* pvParameters);
 void taskButtons(void* pvParameters);
-
 void vLiftController(void* pvParameters);
+
+void vDemo(void* pvParameters);
+void vFuncionarElevador(void* pvParameters);
 
 bool CheckAndDebounceD(uint32_t swNum);
 bool CheckAndDebounceC(uint32_t swNum);
@@ -54,7 +57,7 @@ const char* pcTextForTask2 = "Task 2 is running \r\n";
 typedef struct
 {
 	boolean PortaFechada;
-	char Nome[6];  
+	char Nome[7];  
 	int	Andar;
 	int ProximosAndares[3];
 	int MotorFuncionando;	/* 0 - andar parado
@@ -67,12 +70,14 @@ typedef struct
 {
 	Elevador *elevador[3];
 	int Proximos[10];
+	int PonteiroProximos;
 } ControleElevador;
 
 Elevador* CreateLift();
 
 QueueHandle_t queueAnalyzer;//Objeto da queue
 QueueHandle_t queueLifter;//Objeto da queue
+QueueHandle_t queueMotor;//Objeto da queue
 /*-----------------------------------------------------------*/
 
 /* Global Variables */
@@ -81,10 +86,18 @@ int qtdLifters = 3;
 
 int main( void )
 {
-	vPrintString("Inicializando projeto de sistemas operacionais embarcados freertos");
 	ControleElevador* controlador = malloc(sizeof * controlador);
-	for(int i =0;i<qtdLifters;i++)
+	for (int i = 0; i < qtdLifters; i++)
+	{
 		controlador->elevador[i] = CreateLift();
+	}
+	controlador->elevador[0]->Nome[6] = '1';
+	controlador->elevador[1]->Nome[6] = '2';
+	controlador->elevador[2]->Nome[6] = '3';
+	for (int i = 0; i < 10; i++)
+		controlador->Proximos[i] = 0;
+	controlador->PonteiroProximos = 0;
+	
 	
 	/* Create the Semaphore for synchronization between UART and LED task */
 	vSemaphoreCreateBinary(xSemaphore)
@@ -92,7 +105,15 @@ int main( void )
 	/* Create one of the two tasks. */
 	queueAnalyzer = xQueueCreate(10, sizeof(uint32_t));
 	queueLifter = xQueueCreate(10, sizeof(uint32_t));
+	queueMotor = xQueueCreate(10, sizeof(uint32_t));
 
+	xTaskCreate(	vDemo,
+					"Task Demo",
+					1000,
+					NULL,
+					1,
+					NULL);
+	
 	xTaskCreate(	taskButtons,	
 					"Task Buttons",
 					1000,	
@@ -100,40 +121,169 @@ int main( void )
 					1,	
 					NULL);
 
+	xTaskCreate(	vLiftController,
+					"Task controller",
+					1000,
+					(void*)controlador,
+					1,
+					NULL);
+	
 	xTaskCreate(	vLiftAnalyzer,
 					"Task analyzer",
 					1000,	
 					NULL,	
 					1,		
 					NULL);	
+	
+	//xTaskCreate(	vFuncionarElevador,
+	//				"Task Elevador",
+	//				1000,
+	//				NULL,
+	//				1,
+	//				NULL);
+		
 
-	xTaskCreate(	vLiftController,	
-					"Task controller",	
-					1000,	
-					(void*)controlador,		
-					1,	
-					NULL);	
 	vTaskStartScheduler();	
 
 	for( ;; );
 	return 0;
 }
 
-/*-----------------------------------------------------------*/
-
-void vATask(void* pvParameters)
+/*
+	Logica do controlador para manipular os elevadores.
+*/
+void vLiftController(void* pvParameters)
 {
-	const char* pcTaskName = "Task A is running\r\n";
-	volatile uint32_t ul;
-	Elevador* elevador = (Elevador*)pvParameters;
+	const char* pcTaskName = "\r\nReceived command: ";
+	ControleElevador* controlador = (ControleElevador*)pvParameters;
 
-	for (;; )
+	char* comando;
+	int andar = -1;
+	while (1)
 	{
-		xQueueSend(queueAnalyzer, &elevador, portMAX_DELAY);
-		
-		vTaskDelay(1500, portTICK_PERIOD_MS);
+		if (xQueueReceive(queueLifter, &comando, portMAX_DELAY) == pdPASS) {
+			vPrintString(pcTaskName);
+			vPrintString(comando);
+			vPrintString("\r\n");
+			
+			if (*comando == *"0") {
+				andar = atoi(comando);
+			}
+			else if (*comando == *"1") {
+				andar = atoi(comando);
+			}
+			else if (*comando == *"2") {
+				andar = atoi(comando);
+			}
+			else if (*comando == *"3") {
+				andar = atoi(comando);
+			}
+			else if (*comando == *"4") {
+				andar = atoi(comando);
+			}
+			else if (*comando == *"5") {
+				andar = atoi(comando);
+			}
+			else if (*comando == *"6") {
+				andar = atoi(comando);
+			}
+			else if (*comando == *"7") {
+				andar = atoi(comando);
+			}
+			else if (*comando == *"8") {
+				andar = atoi(comando);
+			}
+			else if (*comando == *"9") {
+				andar = atoi(comando);
+			}
+			else {}
+
+			/*
+			Pega o elevador mais proximo
+			*/
+			int elevadorMaisProximo = 0;
+			for (int i = 0; i < qtdLifters; i++) {
+				if (controlador->elevador[i]->PortaFechada == false) {
+					int diferenca = controlador->elevador[i]->Andar - andar;
+
+					if (diferenca < 0)
+						diferenca *= -1;
+
+					if (elevadorMaisProximo < diferenca) 
+						elevadorMaisProximo = controlador->elevador[i]->Andar;
+				}
+			}
+
+			for (int i = 0; i < qtdLifters; i++) {
+				if (controlador->elevador[i]->Andar == elevadorMaisProximo && controlador->elevador[i]->PortaFechada == false) {
+					vPrintString("Enviar elevador: ");
+					vPrintString(controlador->elevador[i]->Nome);
+
+					if ( 0> andar - controlador->elevador[i]->Andar)
+						controlador->elevador[i]->MotorFuncionando = -1;
+					else
+						controlador->elevador[i]->MotorFuncionando = 1;
+
+
+					controlador->elevador[i]->PortaFechada = true;
+					controlador->elevador[i]->MotorFuncionando = true;
+
+					xQueueSend(queueAnalyzer, &controlador->elevador[i], portMAX_DELAY);
+					xQueueSend(queueMotor, &controlador->elevador[i], portMAX_DELAY);
+					
+					break;
+				}
+			}
+
+			if (controlador->elevador[0]->MotorFuncionando == true && controlador->elevador[1]->MotorFuncionando == true && controlador->elevador[2]->MotorFuncionando == true)
+			{
+				int ponteiro = controlador->PonteiroProximos;
+				controlador->Proximos[ponteiro] = andar;
+				controlador->PonteiroProximos++;
+				vPrintString("Proximos: ");
+				for (int x = 0; x < 10; x++) {
+					vPrintString("[");
+					char buffer[1];
+					int buf = controlador->Proximos[x];
+					itoa(buf, buffer, 10);
+					vPrintString(&buffer);
+					vPrintString("]");
+				}
+				//vPrintString(controlador->Proximos);
+			}
+		}
 	}
 }
+
+/*-----------------------------------------------------------*/
+
+void vDemo(void* pvParameters)
+{
+	const char* pcTaskName = "\r\nTask demo is running\r\n";
+	for (;; )
+	{
+		vPrintString(pcTaskName);
+
+		time_t t;
+		/* Intializes random number generator */
+		//srand((unsigned)time(&t));
+
+		int escolhido = 0;
+		escolhido = (rand() % 10) + 0;
+
+		char numero[1];
+		itoa(escolhido, numero, 10);
+
+		char* pChar = &numero;
+		vPrintString("Sending number: ");
+		vPrintString(numero);
+
+		xQueueSend(queueLifter, &pChar, portMAX_DELAY);
+
+		vTaskDelay(400, portTICK_PERIOD_MS);
+	}
+}
+
 
 void vLiftAnalyzer(void* pvParameters)
 {
@@ -149,103 +299,25 @@ void vLiftAnalyzer(void* pvParameters)
 			char snum[5];
 			itoa(elevador->Andar, snum, 10);
 			vPrintString(snum);
-			vPrintString("\nporta: "); 
-			vPrintString(elevador->PortaFechada);
-			vPrintString("\'motor: ");
-			vPrintString(elevador->MotorFuncionando);
+			vPrintString("\nporta: ");
+			if (elevador->PortaFechada) vPrintString("fechada");
+			else vPrintString("aberta");
+			
+			vPrintString("\nmotor: ");
+			if (elevador->MotorFuncionando>0) vPrintString("rodando");
+			else if (elevador->MotorFuncionando == 0) vPrintString("parado");
+			else vPrintString("desligado");
 
 			vPrintString("\n--------------------------\n");
 		}
 	}
 }
 
-/*
-	Logica do controlador para manipular os elevadores.
-*/
-void vLiftController(void* pvParameters)
-{
-	ControleElevador* controlador = (ControleElevador*)pvParameters;
-
-	char* comando;
-	int andar = -1;
-	while (1)
-	{
-		if (xQueueReceive(queueLifter, &comando, portMAX_DELAY) == pdPASS) {
-			
-			if (comando = "0") {
-				andar = atoi(comando);
-			}
-			else if (comando = "1") {
-				andar = atoi(comando);
-			}
-			else if (comando = "2") {
-				andar = atoi(comando);
-			}
-			else if (comando = "3") {
-				andar = atoi(comando);
-			}
-			else if (comando = "4") {
-				andar = atoi(comando);
-			}
-			else if (comando = "5") {
-				andar = atoi(comando);
-			}
-			else if (comando = "6") {
-				andar = atoi(comando);
-			}
-			else if (comando = "7") {
-				andar = atoi(comando);
-			}
-			else if (comando = "8") {
-				andar = atoi(comando);
-			}
-			else if (comando = "9") {
-				andar = atoi(comando);
-			}
-			if (andar >= 0 && andar <= 10)
-				controlador->Proximos[0] = andar;
-
-			int elevadorMaisProximo = 0;
-			Elevador elevadorProx;
-			for (int i = 0; i < qtdLifters; i++) {
-				if (controlador->elevador[i]->PortaFechada == false) {
-					int diferenca = controlador->elevador[i]->Andar - andar;
-					if (diferenca < 0)diferenca *= -1;
-					if (elevadorMaisProximo < diferenca) elevadorMaisProximo = controlador->elevador[i]->Andar;
-					
-				}
-			}
-
-			for (int i = 0; i < qtdLifters; i++) {
-				if (controlador->elevador[i]->Andar == elevadorMaisProximo) {
-					if(andar > controlador->elevador[i]->Andar)
-					{
-						for(int j = controlador->elevador[i]->Andar + 1; j <andar; j++)
-						{
-							controlador->elevador[i]->ProximosAndares[0] = j;
-						}
-					}
-
-					else if(andar < controlador->elevador[i]->Andar)
-					{
-						for(int j = controlador->elevador[i]->Andar - 1; j > andar; j--)
-						{
-							controlador->elevador[i]->ProximosAndares[0] = j;
-						}
-					}
-
-					xQueueSend(queueAnalyzer, &controlador->elevador[i], portMAX_DELAY);
-					break;
-				}
-			}
-		}
-	}
-}
 
 void vLiftDoorCheck(void* pvParameters)
 {
 	Elevador* elevador;
-	while (1)
+	while (100)
 	{
 		if (xQueueReceive(queueAnalyzer, &elevador, portMAX_DELAY) == pdPASS) {
 			if (elevador->PortaFechada == true) {
@@ -254,6 +326,20 @@ void vLiftDoorCheck(void* pvParameters)
 			else {
 				vPrintString("porta aberta fecha isso");
 			}
+		}
+	}
+}
+
+
+void vFuncionarElevador(void* pvParameters)
+{
+
+	Elevador* elevador;
+	while (100)
+	{
+		vPrintString("teste");
+		if (xQueueReceive(queueMotor, &elevador, portMAX_DELAY) == pdPASS) {
+				vPrintString("teste");
 		}
 	}
 }
@@ -402,5 +488,5 @@ Elevador* CreateLift() {
 	elevador->ProximosAndares[1] = 0;
 	elevador->ProximosAndares[2] = 0;
 
-	return &elevador;
+	return elevador;
 }
